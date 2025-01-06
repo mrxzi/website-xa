@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import AOS from "aos"
 import "aos/dist/aos.css"
 
@@ -10,7 +10,7 @@ const Jumat = React.lazy(() => import("../components/Mapel/Jumat"))
 
 const Schedule = () => {
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    const currentDay = daysOfWeek[new Date().getDay()]
+    const [selectedDay, setSelectedDay] = useState(new Date().getDay())
 
     useEffect(() => {
         AOS.init()
@@ -21,11 +21,11 @@ const Schedule = () => {
 
     // Menentukan kelompok piket berdasarkan hari
     piketGroup = [
-        ["lupa", "lupa", "lupa", "lupa", "lupa"],
-        ["Windi", "Lista", "Jeriko", "Pratiwi", "Damar"],
-        ["Putri", "Paulista", "Firdaus", "Attala", "Ardian"],
-        ["Cariska", "Nila", "Wahid", "Togi", "Annisa"],
-        ["Sultan", "Zaini", "Fajri", "Arif"],
+        ["sebali", "dita", "marco", "jason", "archie"],
+        ["revand", "maria", "devin", "octa", "leon"],
+        ["vanessa", "shasya", "izabel", "dwayane", "kenzie", "jonathan"],
+        ["made", "wayane", "celine", "hyunwoo", "Agung", "tasya"],
+        ["gerald", "cia", "naomi", "deya", "adryan", "ode"],
     ]
 
     const dayComponents = [
@@ -37,23 +37,33 @@ const Schedule = () => {
         Jumat,
     ]
 
-    // Menampilkan komponen berdasarkan hari saat ini
-    const TodayComponent = dayComponents[new Date().getDay()]
+    // Menampilkan komponen berdasarkan hari yang dipilih
+    const TodayComponent = dayComponents[selectedDay]
 
-    // Menampilkan nama-nama piket sesuai dengan hari saat ini
-    const currentPiketNames = piketGroup[new Date().getDay() - 1]
-
-    console.log("Current Day:", currentDay)
-    console.log("Piket Group:", piketGroup)
-    console.log("Current Piket Names:", currentPiketNames)
+    // Menampilkan nama-nama piket sesuai dengan hari yang dipilih
+    const currentPiketNames = piketGroup[selectedDay - 1]
 
     return (
         <>
+            {/* Dropdown untuk memilih hari */}
+            <div className="flex justify-center mt-8">
+                <select
+                    className="p-2 bg-gray-800 text-white rounded-md border border-gray-600"
+                    value={selectedDay}
+                    onChange={(e) => setSelectedDay(Number(e.target.value))}>
+                    {daysOfWeek.map((day, index) => (
+                        <option key={index} value={index}>
+                            {day}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
             {/* Jadwal Mapel */}
             <div className="lg:flex lg:justify-center lg:gap-32 lg:mb-10 lg:mt-16 ">
                 <div className="text-white flex flex-col justify-center items-center mt-8 md:mt-3 overflow-y-hidden">
                     <div className="text-2xl font-medium mb-5" data-aos="fade-up" data-aos-duration="500">
-                        {currentDay}
+                        {daysOfWeek[selectedDay]}
                     </div>
                     <div data-aos="fade-up" data-aos-duration="400">
                         {TodayComponent ? (
